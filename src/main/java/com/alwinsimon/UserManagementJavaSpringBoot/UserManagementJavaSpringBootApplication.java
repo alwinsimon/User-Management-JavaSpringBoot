@@ -1,4 +1,4 @@
-package com.alwinsimon.SpringBootExp1;
+package com.alwinsimon.UserManagementJavaSpringBoot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
