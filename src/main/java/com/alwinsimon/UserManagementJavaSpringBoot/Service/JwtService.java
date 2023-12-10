@@ -2,11 +2,16 @@ package com.alwinsimon.UserManagementJavaSpringBoot.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -50,4 +55,54 @@ public class JwtService {
 
     }
 
+    public String generateJwtToken(Map<String, Object> additionalClaims, UserDetails userDetails) {
+        /**
+        * Function to generate JWT Token With Additional Claims
+        */
+        return Jwts
+                .builder()
+                .setClaims(additionalClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(getJwtSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateJwtToken(UserDetails userDetails) {
+        /**
+         * Function to generate JWT Token without any extra claims
+         * Internally uses generateJwtToken method which takes in additional claims
+         * In place of additional claims, passes an empty HashMap
+         */
+        return generateJwtToken(new HashMap<>(), userDetails);
+
+    }
+
+    public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
+        /**
+         * Function to check the provided token is valid for the user and is not expired.
+        */
+
+        final String userName = extractUsername(jwtToken);
+        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
+
+    }
+
+    private boolean isTokenExpired(String jwtToken) {
+        /**
+         * Function to check the provided token is valid for the user and is not expired.
+         */
+
+        return extractJwtTokenExpiration(jwtToken).before(new Date());
+    }
+
+    private Date extractJwtTokenExpiration(String jwtToken) {
+        /**
+         * Function to return the expiration date of a provided Jwt Token
+         * Internally uses extractClaimFromJwtToken method which takes in token and a single required claim
+         * In place of single required claims, passes a claim to get expiration
+         */
+        return extractClaimFromJwtToken(jwtToken, Claims::getExpiration);
+    }
 }
