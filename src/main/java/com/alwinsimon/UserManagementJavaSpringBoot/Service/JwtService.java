@@ -57,8 +57,9 @@ public class JwtService {
 
     public String generateJwtToken(Map<String, Object> additionalClaims, UserDetails userDetails) {
         /**
-        * Function to generate JWT Token With Additional Claims
-        */
+         * Function to generate JWT Token With Additional Claims
+         */
+
         return Jwts
                 .builder()
                 .setClaims(additionalClaims)
@@ -67,6 +68,7 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getJwtSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+
     }
 
     public String generateJwtToken(UserDetails userDetails) {
@@ -75,6 +77,7 @@ public class JwtService {
          * Internally uses generateJwtToken method which takes in additional claims
          * In place of additional claims, passes an empty HashMap
          */
+
         return generateJwtToken(new HashMap<>(), userDetails);
 
     }
@@ -82,7 +85,7 @@ public class JwtService {
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         /**
          * Function to check the provided token is valid for the user and is not expired.
-        */
+         */
 
         final String userName = extractUsername(jwtToken);
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
@@ -95,6 +98,7 @@ public class JwtService {
          */
 
         return extractJwtTokenExpiration(jwtToken).before(new Date());
+
     }
 
     private Date extractJwtTokenExpiration(String jwtToken) {
@@ -103,6 +107,8 @@ public class JwtService {
          * Internally uses extractClaimFromJwtToken method which takes in token and a single required claim
          * In place of single required claims, passes a claim to get expiration
          */
+
         return extractClaimFromJwtToken(jwtToken, Claims::getExpiration);
+
     }
 }
