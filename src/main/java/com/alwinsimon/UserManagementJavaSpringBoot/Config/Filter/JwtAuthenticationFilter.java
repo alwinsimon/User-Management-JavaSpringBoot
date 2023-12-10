@@ -1,6 +1,6 @@
 package com.alwinsimon.UserManagementJavaSpringBoot.Config.Filter;
 
-import com.alwinsimon.UserManagementJavaSpringBoot.Config.Auth.JwtService;
+import com.alwinsimon.UserManagementJavaSpringBoot.Service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
