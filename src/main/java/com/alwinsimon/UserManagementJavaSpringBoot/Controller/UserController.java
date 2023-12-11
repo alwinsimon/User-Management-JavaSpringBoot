@@ -18,6 +18,9 @@ public class UserController {
 
     @GetMapping("/current-user")
     public User getCurrentUser() {
+
+        // API Endpoint to get the LoggedIn User Details using Token received in the Request Header.
         return userService.currentUserDetails();
+        
     }
 }
