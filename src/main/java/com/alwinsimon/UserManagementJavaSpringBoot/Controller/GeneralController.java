@@ -1,5 +1,6 @@
 package com.alwinsimon.UserManagementJavaSpringBoot.Controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,18 +18,19 @@ import java.util.Map;
 public class GeneralController {
 
     @GetMapping("/")
-    public Map<String, String> getServerStatus() {
-
-        // Get the current date and time in UTC
+    public ResponseEntity<Map<String, Object>> getServerStatus() {
         ZonedDateTime currentDateTimeUtc = ZonedDateTime.now(ZoneOffset.UTC);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy, hh:mm:ss a");
         String formattedDateTime = currentDateTimeUtc.format(formatter);
 
-        // Create a Map for the response
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "SERVER and Systems are Up & Running.");
-        response.put("dateTime", formattedDateTime);
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", "SERVER and Systems are Up & Running.");
+        data.put("dateTime", formattedDateTime);
 
-        return response;
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", data);
+
+        return ResponseEntity.ok(response);
     }
+
 }

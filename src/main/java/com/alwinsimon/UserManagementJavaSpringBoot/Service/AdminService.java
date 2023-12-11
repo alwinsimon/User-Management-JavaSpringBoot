@@ -1,10 +1,12 @@
 package com.alwinsimon.UserManagementJavaSpringBoot.Service;
 
 import com.alwinsimon.UserManagementJavaSpringBoot.Model.User;
+import java.util.List;
 
+public interface AdminService {
 
-public interface UserService {
+    List<User> getAllUsers();
 
-    User currentUserDetails();
+    void deleteUserByEmail(String email);
 
 }
