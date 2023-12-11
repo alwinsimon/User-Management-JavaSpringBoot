@@ -1,8 +1,10 @@
 package com.alwinsimon.UserManagementJavaSpringBoot.Config;
 
+import com.alwinsimon.UserManagementJavaSpringBoot.Config.Auth.CorsConfig;
 import com.alwinsimon.UserManagementJavaSpringBoot.Config.Filter.JwtAuthenticationFilter;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -20,11 +22,15 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    @Autowired
+    private CorsConfig corsConfig;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf((csrf) -> csrf.disable())
+                .cors( cors ->cors.configurationSource(corsConfig))
                 .authorizeHttpRequests(authorize ->authorize
                         .requestMatchers("/health/","/api/v1/auth/**")
                         .permitAll()
