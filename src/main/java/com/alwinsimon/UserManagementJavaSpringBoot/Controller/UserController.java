@@ -1,15 +1,23 @@
 package com.alwinsimon.UserManagementJavaSpringBoot.Controller;
 
-import org.springframework.web.bind.annotation.*;
-//import com.alwinsimon.UserManagementJavaSpringBoot.Model.User;
+import com.alwinsimon.UserManagementJavaSpringBoot.Model.User;
+import com.alwinsimon.UserManagementJavaSpringBoot.Service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class UserController {
-    @PostMapping("/register")
-    public String addUser(@RequestBody String requestBody){
-        System.out.println("Received request body: " + requestBody);
-        return requestBody;
+
+    private final UserService userService;
+
+    @GetMapping("/current-user")
+    public User getCurrentUser() {
+        return userService.currentUserDetails();
     }
 }
