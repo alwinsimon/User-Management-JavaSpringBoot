@@ -3,6 +3,8 @@ package com.alwinsimon.UserManagementJavaSpringBoot.Controller;
 import com.alwinsimon.UserManagementJavaSpringBoot.Model.User;
 import com.alwinsimon.UserManagementJavaSpringBoot.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +19,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/current-user")
-    public User getCurrentUser() {
-
-        // API Endpoint to get the LoggedIn User Details using Token received in the Request Header.
-        return userService.currentUserDetails();
-        
+    public ResponseEntity<User> getCurrentUser() throws Exception {
+        try {
+            // API Endpoint to get the LoggedIn User Details using Token received in the Request Header.
+            User user = userService.currentUserDetails();
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User not found.");
+        }
     }
 }
