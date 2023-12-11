@@ -5,6 +5,6 @@ import com.alwinsimon.UserManagementJavaSpringBoot.Model.User;
 
 public interface UserService {
 
-    public User currentUserDetails();
+    User currentUserDetails();
 
 }
