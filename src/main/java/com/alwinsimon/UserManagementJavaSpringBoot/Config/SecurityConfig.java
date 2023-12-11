@@ -2,7 +2,6 @@ package com.alwinsimon.UserManagementJavaSpringBoot.Config;
 
 import com.alwinsimon.UserManagementJavaSpringBoot.Config.Auth.CorsConfig;
 import com.alwinsimon.UserManagementJavaSpringBoot.Config.Filter.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,14 +29,14 @@ public class SecurityConfig {
 
         http
                 .csrf((csrf) -> csrf.disable())
-                .cors( cors ->cors.configurationSource(corsConfig))
-                .authorizeHttpRequests(authorize ->authorize
-                        .requestMatchers("/health/","/api/v1/auth/**")
+                .cors(cors -> cors.configurationSource(corsConfig))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/health/", "/api/v1/auth/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
                 )
-                .sessionManagement((session)->session
+                .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
